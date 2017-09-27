@@ -34,7 +34,7 @@ def simplify(dfa=FA):
             new_temp_set = {state_for_test, }
             for state in state_set:
                 # 判断该集合是否需要分割，相同的放在一个集合里
-                if not need_slice(state_for_test, state, dfa.SIGMA, dfa.F, p):
+                if not need_slice(state_for_test, state, simple_dfa.SIGMA, simple_dfa.F, p):
                     new_temp_set.add(state)
             p.append(new_temp_set)
             state_set.difference_update(new_temp_set)
@@ -51,24 +51,20 @@ def simplify(dfa=FA):
 
             state_for_test = state_set.pop()
 
-            for state in dfa.K:
-                for item in dfa.F[state].keys():
-                    if dfa.F[state][item] in state_set:
-                        dfa.F[state][item] = state_for_test
+            for state in simple_dfa.K:
+                for item in simple_dfa.F[state].keys():
+                    if simple_dfa.F[state][item] in state_set:
+                        simple_dfa.F[state][item] = state_for_test
 
             for state in state_set:
-                for item in dfa.F[state]:
-                    dfa.F[state_for_test][item] = dfa.F[state][item]
+                for item in simple_dfa.F[state]:
+                    simple_dfa.F[state_for_test][item] = simple_dfa.F[state][item]
                 # 删除多余节点
-                dfa.F.pop(state)
-                dfa.K.remove(state)
-                dfa.Z.discard(state)
+                simple_dfa.F.pop(state)
+                simple_dfa.K.remove(state)
+                simple_dfa.Z.discard(state)
                 if state == 0:
                     s = state_for_test
 
-    simple_dfa.setF(dfa.F)
-    simple_dfa.setK(dfa.K)
-    simple_dfa.setS(dfa.S)
-    simple_dfa.setZ(dfa.Z)
 
     return simple_dfa

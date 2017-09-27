@@ -19,7 +19,7 @@ def NFAToDFA():
     # while(input_sigma != '#'):
     #     input_sigma = input_sigma
     #     sigma.add(input_sigma)
-
+    #
     k = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
     sigma = {'a', 'b'}
@@ -55,11 +55,15 @@ def NFAToDFA():
 
 
 
-
     dfa = FA()
 
     dfa = NFA_to_DFA(nfa)
+    print "所得到的DFA:\n"
+    dfa.display()
+    return dfa
 
+def simple_dfa(dfa):
     simple_dfa = simplify(dfa)
-
-    print 1
+    print "\n----------------------------\n"
+    print "化简的DFA:\n"
+    simple_dfa.display()

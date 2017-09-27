@@ -4,4 +4,5 @@ from controller.automataController import *
 
 
 if __name__ == '__main__':
-    NFAToDFA()
+    dfa = NFAToDFA()
+    simple_dfa(dfa)

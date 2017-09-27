@@ -39,3 +39,17 @@ class FA:
 
     def setZ(self, z=set()):
         self.Z = z
+
+    def display(self):
+        print "状态集:"
+        print self.K
+        print "\n有穷字母表:"
+        print self.SIGMA
+        print "\n转换函数:"
+        for from_state in self.F:
+            for alphabet in self.F[from_state]:
+                print from_state,' -> ',self.F[from_state][alphabet]," with",alphabet," "
+        print "\n初态："
+        print self.S
+        print "\n终态: "
+        print self.K
