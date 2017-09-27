@@ -18,6 +18,7 @@ def move(begin_set, bridge, f, flag=set):
     for begin in begin_set:
         if bridge in f[begin].keys():
             state_set = f[begin][bridge]
+            # 并集
             res = res | closure(state_set, f, res)
         else:
             continue
@@ -26,35 +27,35 @@ def move(begin_set, bridge, f, flag=set):
 
 def NFA_to_DFA(nfa=FA):
     dfa = FA(nfa.SIGMA)
-
-    queue = []
+    child_list = []
     next_temp = closure(nfa.S, nfa.F, set())
-    queue.append(next_temp)
+    child_list.append(next_temp)
     if not next_temp.isdisjoint(nfa.Z):
         dfa.addZ(0)
     dfa.addK(0)
     i = 0
-    while i < len(queue):
+
+    while i < len(child_list):
         for alphabet in nfa.SIGMA:
-            next_temp = move(queue[i], alphabet, nfa.F, set())
+            next_temp = move(child_list[i], alphabet, nfa.F, set())
             if len(next_temp) == 0:
                 continue
-
-            # 检查next_temp是否是第一次出现
+            # 检查next_temp是否是第一次出现，出现过便标记
             exist = False
-            if next_temp in queue:
+            if next_temp in child_list:
                 exist = True
-                index = queue.index(next_temp)
+                index = child_list.index(next_temp)
             else:
-                queue.append(next_temp)
-                index = len(queue) - 1
+                child_list.append(next_temp)
+                index = len(child_list) - 1
             # 构造F
-            if not (dfa.ifIndexInTransiton(i)):
+            if not (dfa.indexInTransiton(i)):
                 dfa.createTransition(i)
             dfa.addTransition(i, alphabet, index)
             # 添加K时检查是否为终态
             if not exist:
                 dfa.addK(index)
+                # 判断是否有交集,如果有，该状态为终态
                 if not next_temp.isdisjoint(nfa.Z):
                     dfa.addZ(index)
         i = i + 1

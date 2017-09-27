@@ -25,7 +25,7 @@ class FA:
     def createTransition(self, index):
         self.F[index] = {}
 
-    def ifIndexInTransiton(self, index):
+    def indexInTransiton(self, index):
         return index in self.F
 
     def setK(self, k=set()):
