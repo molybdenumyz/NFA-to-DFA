@@ -2,16 +2,15 @@
 from model.Model import FA
 
 
-def need_slice(state_for_test, state_now, sigma, f, p):
+def not_slice(state_for_test, state_now, sigma, f, p):
     for alphabet in sigma:
         for state_set in p:
             # 没有指向终态
-            if f[state_for_test][alphabet] not in state_set:
-                break
-            if f[state_now][alphabet] not in state_set:
-                break
-            return False
-
+            if f[state_for_test][alphabet] in state_set:
+                if f[state_now][alphabet]  in state_set:
+                    break
+                else:
+                    return False
     return True
 
 
@@ -34,9 +33,10 @@ def simplify(dfa=FA):
             new_temp_set = {state_for_test, }
             for state in state_set:
                 # 判断该集合是否需要分割，相同的放在一个集合里
-                if not need_slice(state_for_test, state, simple_dfa.SIGMA, simple_dfa.F, p):
+                if  not_slice(state_for_test, state, simple_dfa.SIGMA, simple_dfa.F, p):
                     new_temp_set.add(state)
             p.append(new_temp_set)
+            #在s中删除同时在s和new中的项目，如{1,2} 消去 {2}
             state_set.difference_update(new_temp_set)
             if (len(state_set) == 0):
                 p.remove(set())
@@ -64,7 +64,7 @@ def simplify(dfa=FA):
                 simple_dfa.K.remove(state)
                 simple_dfa.Z.discard(state)
                 if state == 0:
-                    s = state_for_test
+                    simple_dfa.S = state_for_test
 
 
     return simple_dfa
