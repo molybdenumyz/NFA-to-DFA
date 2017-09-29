@@ -1,0 +1,6 @@
+.idea/
+.DS_Store
+service/regexService.pyc
+model/Model.pyc
+service/DFAService.pyc
+service/NFAService.pyc
